@@ -1,0 +1,89 @@
+@gutter-width : 1.5rem;
+@num-cols : 12;
+
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+  @media @medium {
+    .container {
+      width: 85%;
+    }
+  }
+  @media @large {
+    .container {
+      width: 70%;
+    }
+  }
+}
+
+.col .row {
+  margin-left: (-1 * @gutter-width / 2);
+  margin-right: (-1 * @gutter-width / 2);
+}
+
+.section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  &.no-pad {
+    padding: 0;
+  }
+  &.no-pad-bot {
+    padding-bottom: 0;
+  }
+  &.no-pad-top {
+    padding-top: 0;
+  }
+}
+
+.set-grid-classes(@size, @n, @i:1) when (@i<=@n) {
+  @p : 100/@num-cols*@i;
+  @percent : unit(@p,%);
+  @class-name : ~"@{size}@{i}";
+  &.offset-@{class-name} {
+    margin-left: @percent;
+  }
+  &.pull-@{class-name} {
+    right: @percent;
+  }
+  &.push-@{class-name} {
+    left: @percent;
+  }
+  &.@{class-name} {
+    width:@percent;
+  }
+  .set-grid-classes(@size, @n, (@i+1));
+}
+
+.row {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: @gutter-width;
+  .clearfix;
+}
+.col {
+  box-sizing: border-box;
+  min-height: 1px;
+
+  &[class*="push-"],
+  &[class*="pull-"] {
+    position: relative;
+  }
+
+  .set-grid-classes("s",@num-cols,1);
+  @media @medium {
+    .set-grid-classes("m",@num-cols,1);
+  }
+  @media @large {
+    .set-grid-classes("l",@num-cols,1);
+  }
+  @media @wide {
+    .set-grid-classes("w",@num-cols,1);
+  }
+  &.flo {
+    float: left;
+  }
+  &.pad {
+    padding: 0 @gutter-width / 2;    
+  }
+}
